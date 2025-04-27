@@ -23,7 +23,7 @@ export default function Admin() {
   const [ description, setDescription ] = useState('')
   const [ photo, setPhoto ] = useState(null)
 
-  const base_url = "http://localhost:8080"
+  const base_url = "https://bba-backend.onrender.com"
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
