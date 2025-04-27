@@ -1,5 +1,5 @@
 import { Geist, Geist_Mono, Sixtyfour_Convergence, Inter_Tight, Orbitron, Sacramento, Rob  } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 
 export const metadata = {
   title: "BBA",
@@ -7,8 +7,8 @@ export const metadata = {
   keywords: "resume, 99X Insights, expo, react, reactjs, reactnative,react native, nodejs, node js",
   authors: [{ name: "DevHiv3" }],
   openGraph: {
-    title: "99X Insights",
-    description: "99X Insights",
+    title: "BBA",
+    description: "BBA",
     url: "https://tinyurl.com/instagram-clone-expo",
     type: "website",
     images: [
