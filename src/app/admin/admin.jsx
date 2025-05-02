@@ -26,7 +26,7 @@ export default function Admin({ initialLawyers }) {
   const [ photo, setPhoto ] = useState(null)
   const [ lawyers, setLawyers ] = useState(initialLawyers || [])
 
-  const base_url = "https://bba-backend.onrender.com/"
+  const base_url = "http://localhost:8080"
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
