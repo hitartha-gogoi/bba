@@ -104,11 +104,11 @@ function Navbar({ textColor }){
         {/* BETWEEN LINKS */}
         <div className={`flex flex-row justify-center items-center sm:px-10 px-2 text-base uppercase text-${textColor}`}>
           <Link href="/about"><span className="hidden sm:block font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text">about</span></Link>
-          <Link href="/"><span className="hidden sm:block font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text">events</span></Link>
+          <Link href="/events"><span className="hidden sm:block font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text">events</span></Link>
           <Link href="/gallery"><span className="hidden sm:block font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text">gallery</span></Link>
           <Link href="/directory"><span className="hidden sm:block font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text">directory</span></Link>
-          <span onMouseEnter={() => setHoveredMore(true)} onMouseLeave={() => setHoveredMore(false)} className="hidden sm:block font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 py-20 banner-text">more</span>
-          <span onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} className="hidden sm:block font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 py-20 text-center banner-text">socials</span>
+          <span onMouseEnter={() => setHoveredMore(true)} onMouseLeave={() => setHoveredMore(false)} className="hidden sm:block font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 py-12 banner-text">more</span>
+          <span onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} className="hidden sm:block font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 py-12 text-center banner-text">socials</span>
           <span className="hidden sm:block font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text">contact</span>
         </div>
 

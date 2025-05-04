@@ -10,6 +10,14 @@ import "react-datepicker/dist/react-datepicker.css";
 
 export default function Admin({ initialLawyers }) {
   const [query, setQuery] = useState('');
+
+  const [ overlayLawyerName, setOverlayLawyerName ] = useState('')
+  const [ overlayLawyerEmail, setOverlayLawyerEmail ] = useState('')  
+  const [ overlayLawyerDescription, setOverlayLawyerDescription ] = useState('')
+  const [ overlayLawyerPhoto, setOverlayLawyerPhoto ] = useState('')  
+  const [ overlayLawyerPhone, setOverlayLawyerPhone ] = useState('')
+  const [ overlayLawyerId, setOverlayLawyerId ] = useState('')
+
   const [startDate, setStartDate] = useState(new Date());
   const [ endDate, setEndDate] = useState(new Date());
   const [overlay, setOverlay] = useState(false);
@@ -25,6 +33,10 @@ export default function Admin({ initialLawyers }) {
   const [ description, setDescription ] = useState('')
   const [ photo, setPhoto ] = useState(null)
   const [ lawyers, setLawyers ] = useState(initialLawyers || [])
+
+  // local url = http://localhost:8080
+
+  // production url = https://bba-backend.onrender.com
 
   const base_url = "http://localhost:8080"
 
@@ -212,25 +224,31 @@ export default function Admin({ initialLawyers }) {
             >
               <div className="relative bg-white rounded-2xl shadow-2xl overflow-hidden max-w-lg w-full">
                 {/* close button */}
-                <button onClick={() => setOverlay(false)} className="absolute top-4 right-4 text-gray-600 hover:text-gray-800">
+                <button style={{ pointerEvents: "auto" }} onClick={() => setOverlay(false)} className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 z-50">
                   X
                 </button>
 
                 {/* large image */}
                 <div className="w-full h-80 relative">
-                  
+                  <Image
+                    src={overlayLawyerPhoto || "https://via.placeholder.com/300"} // default image if no photo is available
+                    alt="Lawyer Image"
+                    layout="fill"
+                    objectFit="cover"
+                    className="w-4/5 h-96 object-contain"
+                  />
                 </div>
 
                 {/* details */}
                 <div className="p-6 space-y-2">
-                  <p className="font-bold text-lg">
-                    Hitartha
+                  <p className="font-bold text-black text-lg">
+                   {overlayLawyerName}
                   </p>
                   <p className="text-gray-700">
-                   arnabgogoi83@gmail.com
+                   {overlayLawyerEmail}
                   </p>
                   <p className="text-gray-600 text-sm mt-2">
-                   sdffdsfsdfsf
+                   {overlayLawyerDescription}
                   </p>
                 </div>
               </div>
@@ -261,14 +279,14 @@ export default function Admin({ initialLawyers }) {
         return (
 
         <div key={index} className="flex flex-row justify-evenly items-center p-4  w-full rounded-md">
-          <div className="flex flex-row justify-start flex-wrap items-center py-2 w-full sm:w-4/5">
+          <div onClick={() => { setOverlayLawyerName(lawyer.username); setOverlayLawyerEmail(lawyer.email); setOverlayLawyerPhoto(lawyer.photo); setOverlayLawyerDescription(lawyer.description); setOverlay(true) }}  className="flex flex-row justify-start flex-wrap items-center py-2 w-full sm:w-4/5">
              {lawyer.photo ? ( <Image height={60} width={60} className="sm:rounded-md rounded-full h-10 w-10" src={lawyer.photo || "https://via.placeholder.com/60"} alt={lawyer.username || "Lawyer Image"} />) : ( <div className="w-[60px] h-[60px] bg-gray-300 rounded-md" />)}
             <div className="flex flex-col justify-start items-center py-2 ml-4">
               <span className="text-black self-start font-semibold banner-text ">{lawyer.username}</span>
               <span className="text-gray-400 self-start font-semibold banner-text ">{lawyer.email}</span>
             </div>
           </div>
-          <button onClick={() => setOverlay(true)} className="text-gray-700 text-sm hidden sm:block bg-gray-100 font-normal banner-text uppercase w-48 py-2 rounded-md text-center">view details</button>
+          <button onClick={() => { setOverlayLawyerName(lawyer.username); setOverlayLawyerEmail(lawyer.email); setOverlayLawyerPhoto(lawyer.photo); setOverlayLawyerDescription(lawyer.description); setOverlay(true) }} className="text-gray-700 text-sm hidden sm:block bg-gray-100 font-normal banner-text uppercase w-48 py-2 rounded-md text-center">view details</button>
         </div> 
         )
       })}
