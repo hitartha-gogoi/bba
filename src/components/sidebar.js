@@ -2,10 +2,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link"
 import { Typography } from '@mui/material';
-import { FcAbout } from "react-icons/fc"
-import { SiFiverr } from "react-icons/si"
-import LibraryBooksIcon from "@mui/icons-material/LibraryBooks"
-import { AiOutlineInfoCircle } from "react-icons/ai"
+import { ChevronsRight } from "lucide-react";
 
 function Sidebar ({ isVisible, toggleSidebar }){
   return (
@@ -13,10 +10,12 @@ function Sidebar ({ isVisible, toggleSidebar }){
       initial={{ x: "100%" }}  // Sidebar starts from right (100% to the right)
       animate={{ x: isVisible ? 0 : "100%" }}  // Sidebar moves to the left (0 when visible)
       transition={{ type: "spring", stiffness: 120 }}
-      className="fixed top-0 right-0 h-full w-64 bg-white shadow-lg p-5 z-40"
+      className="fixed top-0 right-0 h-full w-64 bg-white shadow-lg p-5 z-40 overflow-y-auto no-scrollbar"
     >
     
-    <div className="flex flex-col justify-start items-center flex-wrap fixed bg-white h-screen w-52 z-[1500] text-black text-md text-sm font-bold py-20 space-y-2">
+    <div className="flex flex-col justify-start items-center flex-nowrap fixed bg-white h-screen w-52 z-[1500] text-black text-md text-sm font-bold py-20 space-y-2 overflow-y-auto no-scrollbar">
+
+    <ChevronsRight onClick={toggleSidebar} className="w-6 h-6 text-gray-600 hover:text-blue-500 transition duration-300 absolute left-2 top-2" />
     
 
     <Link href="/admin">
@@ -26,13 +25,7 @@ function Sidebar ({ isVisible, toggleSidebar }){
     </div>
     </Link>
 
-    <Link href="/about">
-    <div className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 text-black hover:text-blue-900 hover:border-blue-900">
-    <span className="inline h-4 w-4">  </span>
-    <Typography variant="subtitle6" className="relative right-6 font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text uppercase"> about </Typography>
-    </div>
-    </Link>
-
+    
     <Link href="/events">
     <div className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 text-black hover:text-blue-900 hover:border-blue-900">
     <span className="inline h-4 w-4">  </span>
@@ -68,7 +61,7 @@ function Sidebar ({ isVisible, toggleSidebar }){
     </div>
     </Link>
 
-    <Link href="/payment">
+    <Link href="/pay-fee">
     <div className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 text-black hover:text-blue-900 hover:border-blue-900">
     <span className="inline h-4 w-4">  </span>
     <Typography variant="subtitle6" className="relative right-6 font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text uppercase"> pay fee </Typography>
@@ -82,12 +75,56 @@ function Sidebar ({ isVisible, toggleSidebar }){
     </div>
     </Link>
 
-    
-    <div onClick={toggleSidebar} className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 hover:text-blue-900 hover:border-blue-900">
-    <LibraryBooksIcon className="inline h-4 w-4" />
-    <Typography variant="subtitle6" className="relative right-6 font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text"> CLOSE </Typography>
+    <Link href="/">
+    <div className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 text-black hover:text-blue-900 hover:border-blue-900">
+    <span className="inline h-4 w-4">  </span>
+    <Typography variant="subtitle6" className="relative right-2 font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text uppercase"> upcoming events </Typography>
     </div>
-    
+    </Link>
+
+    <Link href="/">
+    <div className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 text-black hover:text-blue-900 hover:border-blue-900">
+    <span className="inline h-4 w-4">  </span>
+    <Typography variant="subtitle6" className="relative right-6 font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text uppercase"> news </Typography>
+    </div>
+    </Link>
+
+    <Link href="/">
+    <div className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 text-black hover:text-blue-900 hover:border-blue-900">
+    <span className="inline h-4 w-4">  </span>
+    <Typography variant="subtitle6" className="relative font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text uppercase"> executive committee </Typography>
+    </div>
+    </Link>
+
+
+    <Link href="/">
+    <div className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 text-black hover:text-blue-900 hover:border-blue-900">
+    <span className="inline h-4 w-4">  </span>
+    <Typography variant="subtitle6" className="relative font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text uppercase"> bab membership </Typography>
+    </div>
+    </Link>
+
+
+    <Link href="/">
+    <div className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 text-black hover:text-blue-900 hover:border-blue-900">
+    <span className="inline h-4 w-4">  </span>
+    <Typography variant="subtitle6" className="relative right-6 font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text uppercase"> voterlist </Typography>
+    </div>
+    </Link>
+
+    <Link href="/">
+    <div className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 text-black hover:text-blue-900 hover:border-blue-900">
+    <span className="inline h-4 w-4">  </span>
+    <Typography variant="subtitle6" className="relative font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text uppercase"> download forms </Typography>
+    </div>
+    </Link>
+
+    <Link href="/">
+    <div className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 text-black hover:text-blue-900 hover:border-blue-900">
+    <span className="inline h-4 w-4">  </span>
+    <Typography variant="subtitle6" className="relative right-4 font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text uppercase"> sitting judges </Typography>
+    </div>
+    </Link>
     
     </div>
     </motion.div>

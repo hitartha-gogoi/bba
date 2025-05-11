@@ -1,45 +1,85 @@
 'use client';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';// search icon from lucide-react (already available in Next 15)
+import { useEffect, useState } from 'react';
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer"
 import DatePicker from "react-datepicker";
 import { motion, AnimatePresence } from 'framer-motion';
 import "react-datepicker/dist/react-datepicker.css";
+import { Trash2, X, Pencil } from 'lucide-react';
 
+export default function Admin({ initialLawyers, initialEvents, initialLinks }) {
 
-export default function Admin({ initialLawyers }) {
-  const [query, setQuery] = useState('');
+  // SEARCH QUERY STATE
+  const [ query, setQuery] = useState('');
+  const [ eventQuery, setEventQuery ] = useState('')
 
+  // OVERLAY STATES FOR LAWYER POPUP
+  const [ overlayLawyerId, setOverlayLawyerId ] = useState('')
   const [ overlayLawyerName, setOverlayLawyerName ] = useState('')
   const [ overlayLawyerEmail, setOverlayLawyerEmail ] = useState('')  
   const [ overlayLawyerDescription, setOverlayLawyerDescription ] = useState('')
   const [ overlayLawyerPhoto, setOverlayLawyerPhoto ] = useState('')  
   const [ overlayLawyerPhone, setOverlayLawyerPhone ] = useState('')
-  const [ overlayLawyerId, setOverlayLawyerId ] = useState('')
+  const [ overlay, setOverlay] = useState(false);
 
-  const [startDate, setStartDate] = useState(new Date());
-  const [ endDate, setEndDate] = useState(new Date());
-  const [overlay, setOverlay] = useState(false);
+  // OVERLAY STATES FOR EVENT POPUP
+  const [ overlayEvent, setOverlayEvent ] = useState(false);
+  const [ overlayEventName, setOverlayEventName ] = useState('')
+  const [ overlayEventDescription, setOverlayEventDescription ] = useState('')
+  const [ overlayEventLocation, setOverlayEventLocation ] = useState('')
+  const [ overlayEventPhoto, setOverlayEventPhoto ] = useState('')
+  const [ overlayEventId, setOverlayEventId ] = useState('')
+  const [ overlayEventStartDate, setOverlayEventStartDate ] = useState('')
+  const [ overlayEventEndDate, setOverlayEventEndDate ] = useState('')
 
+  // // OVERLAY STATES FOR LINK POPUP
+  const [ overlayLink, setOverlayLink ] = useState(false);
+  const [ overlayLinkTitle, setOverlayLinkTitle ] = useState('')
+  const [ overlayLinkDescription, setOverlayLinkDescription ] = useState('')
+  const [ overlayLinkType, setOverlayLinkType ] = useState('')
+  const [ overlayLinkUrl, setOverlayLinkUrl ] = useState('')
+  const [ overlayLinkCategory, setOverlayLinkCategory ] = useState('')
+  const [ overlayLinkId, setOverlayLinkId ] = useState('')
 
-  // create a progress state for showing activityIndicator when handleSubmit is called and turn off when the response is received
+  // ACTIVITY INDICATOR LOADING STATE
   const [isLoading, setIsLoading] = useState(false);
 
+  // STATES FOR LAWYER FORM
   const [ username, setUsername ] = useState('')
   const [ email, setEmail ] = useState('')
   const [ password, setPassword ] = useState('')
   const [ phone, setPhone ] = useState('')
   const [ description, setDescription ] = useState('')
   const [ photo, setPhoto ] = useState(null)
+
+  // STATES FOR EVENT FORM
+  const [ eventName, setEventName ] = useState('')
+  const [ eventLocation, setEventLocation ] = useState('')
+  const [ eventDescription, setEventDescription ] = useState('')
+  const [ startDate, setStartDate ] = useState(new Date())
+  const [ endDate, setEndDate ] = useState(new Date())
+  const [ eventPhoto, setEventPhoto ] = useState(null)
+
+
+  // STATES FOR LINK FORM
+  const [ linkTitle, setLinkTitle ] = useState('')
+  const [ linkDescription, setLinkDescription ] = useState('')
+  const [ linkType, setLinkType ] = useState('photo')
+  const [ linkUrl, setLinkUrl ] = useState('')
+  const [ linkCategory, setLinkCategory ] = useState('carousels-1')
+  
+  // STATES TO STORE EVENTS, LINKS AND LAWYERS RECEIVED FROM BACKEND
+  const [ events, setEvents ] = useState(initialEvents || [])
+  const [ links, setLinks ] = useState(initialLinks || [])
   const [ lawyers, setLawyers ] = useState(initialLawyers || [])
 
   // local url = http://localhost:8080
-
   // production url = https://bba-backend.onrender.com
 
-  const base_url = "http://localhost:8080"
+  const base_url = "https://bba-backend.onrender.com"
 
+  // FILE HANDLING FOR LAWYER PHOTO
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
 
@@ -62,14 +102,68 @@ export default function Admin({ initialLawyers }) {
     }
   };
 
-  const handleSearch = (event) => {
-    const searchQuery = event.target.value.toLowerCase();
-    setQuery(searchQuery);
-    // Implement the search logic here, e.g., filter users based on the search query
+  // FILE HANDLING FOR EVENT PHOTO
+  const handleEventFileUpload = (event) => {
+    const file = event.target.files[0];
 
+    // add validation for file must be needed
+    if (!file) {  
+      console.error('No file selected');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) { // 5MB limit 
+      console.error('File size exceeds 5MB limit');
+      alert('File size exceeds 5MB limit');
+      return;
+    }
+
+    if (file) {
+      // Handle the file upload logic here
+      console.log('File uploaded:', file.name);
+      alert(`File selected: ${file.name}`);
+      setEventPhoto(file);
+    }
+  };
+
+  //SEARCH LAWYERS
+  const search = async()=>{
+    const response = await fetch(`${base_url}/search?username=${query}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      console.error('Error fetching users:', response.statusText);
+      return;
+    }
+
+    const data = await response.json();
+    setLawyers(data.lawyers);
+    console.log('Search results:', data);
   }
 
-  // fetch the users from the server and show them in a table, and also add a delete button for each user, and also add a edit button for each user
+  // SEARCH EVENTS
+  async function searchEvents() {
+    const response = await fetch(`${base_url}/search-event?title=${eventQuery}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      console.error('Error fetching users:', response.statusText);
+      return;
+    }
+
+    const data = await response.json();
+    setEvents(data.events);
+    console.log('Search results:', data);
+  }
+
+  // FETCH LAWYERS
   const fetchLawyers = async () => {
     try{
     const response = await fetch(`${base_url}/lawyers`, { 
@@ -90,7 +184,49 @@ export default function Admin({ initialLawyers }) {
   }
   };
 
+  // FETCH EVENTS
+  const fetchEvents = async () => {
+    try {
+      const response = await fetch(`${base_url}/events`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        console.error('Error fetching events:', response.statusText);
+        return;
+      }
+      const data = await response.json();
+      console.log('events:', data);
+      setEvents(data.events);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
 
+  // FETCH LINKS
+  const fetchLinks = async () => {
+    try { 
+      const response = await fetch(`${base_url}/links`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        console.error('Error fetching links:', response.statusText);
+        return;
+      }
+      const data = await response.json();
+      console.log('links:', data);
+      setLinks(data.links);
+    } catch (error) {
+      console.error('Error fetching links:', error);
+    }
+  };  
+
+  // CREATES LAWYER AT THE BACKEND
   const handleSubmit = async (event) => {
 
     // add validation for all fields must be filled
@@ -183,11 +319,273 @@ export default function Admin({ initialLawyers }) {
     } 
   }
 
+  // CREATES EVENT AT THE BACKEND
+  const postEvent = async (event) => {
+
+    //add validation for all fields must be filled
+    if (!eventName || !eventDescription || !startDate || !endDate || !eventPhoto) {
+      console.error('All fields are required');
+      alert('All fields are required');
+      event.preventDefault();
+      return;
+    }
+
+    if (startDate > endDate) {
+      console.error('Start date must be before end date');
+      alert('Start date must be before end date');
+      event.preventDefault();
+      return;
+    }
+
+    if (eventName.length < 3) {
+      console.error('Event name must be at least 3 characters long');
+      alert('Event name must be at least 3 characters long');
+      event.preventDefault();
+      return;
+    }
+
+    if (eventDescription.length < 10) {
+      console.error('Event description must be at least 10 characters long');
+      alert('Event description must be at least 10 characters long');
+      event.preventDefault();
+      return;
+    }
+
+    if (!eventPhoto) {
+      console.error('Event photo is required');
+      alert('Event photo is required');
+      event.preventDefault();
+      return;
+    }
+    if (eventPhoto.size > 5 * 1024 * 1024) { // 5MB limit
+      console.error('File size exceeds 5MB limit');
+      alert('File size exceeds 5MB limit');
+      event.preventDefault();
+      return;
+    }
+
+    if (!eventPhoto.type.startsWith('image/')) {
+      console.error('File must be an image');
+      alert('File must be an image');
+      event.preventDefault();
+      return;
+    }
+
+    console.log("submit")
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append('title', eventName);
+    formData.append('description', eventDescription);
+    formData.append('photo', eventPhoto);
+    formData.append('location', eventLocation);
+    formData.append('startDate', startDate.toISOString());
+    formData.append('endDate', endDate.toISOString());
+
+    setIsLoading(true);
+
+    const response = await fetch(`${base_url}/create-event`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if(response.status === 400) {
+      console.log("event already exists")  
+      setIsLoading(false)
+      alert("event already exists")
+    } else if (response.status === 500) {
+      console.log("error")
+      setIsLoading(false)
+      alert("error")
+    } else if (response.status === 404) {
+      console.log("event not found")
+      setIsLoading(false)
+      alert("event not found")
+    } else if (response.status === 200) { 
+      console.log("event created")
+      setIsLoading(false)
+      alert("event created")
+      setEventName('')
+      setDescription('')
+      setStartDate(new Date())
+      setEndDate(new Date())
+      fetchEvents()
+    }
+
+    if (!response.ok) {
+      console.error('Error creating event:', response.statusText);
+    }
+  };
+
+
+    // CREATES LINK AT THE BACKEND
+  const addLink = async (event) => {
+
+    //add validation for all fields must be filled
+    if (!linkTitle || !linkDescription || !linkUrl || !linkType || !linkCategory) {
+      console.error('All fields are required');
+      alert('All fields are required');
+      event.preventDefault();
+      return;
+    }
+
+    if (linkTitle.length < 3) {
+      console.error('Event name must be at least 3 characters long');
+      alert('Event name must be at least 3 characters long');
+      event.preventDefault();
+      return;
+    }
+
+    if (linkDescription.length < 10) {
+      console.error('Event description must be at least 10 characters long');
+      alert('Event description must be at least 10 characters long');
+      event.preventDefault();
+      return;
+    }
+
+    if (!linkUrl) {
+      console.error('Event photo is required');
+      alert('Event photo is required');
+      event.preventDefault();
+      return;
+    }
+
+    console.log("submit")
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append('title', linkTitle);
+    formData.append('description', linkDescription);
+    formData.append('link', linkUrl);
+    formData.append('type', linkType);
+    formData.append('category', linkCategory);
+
+    setIsLoading(true);
+
+    const response = await fetch(`${base_url}/create-link`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+        },
+      body: JSON.stringify({
+        title: linkTitle,
+        description: linkDescription,
+        link: linkUrl,
+        type: linkType,
+        category: linkCategory
+      }),
+    });
+
+    if(response.status === 400) {
+      console.log("Link already exists")  
+      setIsLoading(false)
+      alert("Link already exists")
+    } else if (response.status === 500) {
+      console.log("error")
+      setIsLoading(false)
+      alert("error")
+    } else if (response.status === 404) {
+      console.log("Link not found")
+      setIsLoading(false)
+      alert("Link not found")
+    } else if (response.status === 200) { 
+      console.log("Link created")
+      setIsLoading(false)
+      alert("Link created")
+      setEventName('')
+      setDescription('')
+      setStartDate(new Date())
+      setEndDate(new Date())
+      fetchEvents()
+    }
+
+    if (!response.ok) {
+      console.error('Error creating link:', response.statusText);
+    }
+  };
+
+
+  // DELETE LAWYER FROM BACKEND
+  const deleteLawyer = async (id) => {
+    setIsLoading(true)
+    setOverlay(false)
+    const response = await fetch(`${base_url}/lawyer/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if(response.status === 400) {
+      console.log("lawyer already exists")  
+      setIsLoading(false)
+      alert("lawyer already exists")
+    } else if (response.status === 500) {
+      console.log("error")
+      setIsLoading(false)
+      alert("error")
+    } else if (response.status === 404) {
+      console.log("lawyer not found")
+      setIsLoading(false)
+      alert("lawyer not found")
+    } else if (response.status === 500) {
+      console.log("error")
+      setIsLoading(false)
+      alert("error")
+    } else if (response.status === 404) {
+      console.log("lawyer not found")
+      setIsLoading(false)
+      alert("lawyer not found")
+    } else if (response.status === 200) { 
+      console.log("lawyer deleted")
+      setIsLoading(false)
+      alert("lawyer deleted")
+      fetchLawyers()
+    }
+
+    if (!response.ok) {
+      console.error('Error deleting lawyer:', response.statusText);
+    }
+  };
+
+  // DELETE EVENT FROM BACKEND
+  const deleteEvent = async (id) => {
+    setIsLoading(true);
+    setOverlayEvent(false);
+    const response = await fetch(`${base_url}/event/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if(response.status === 400) {
+      console.log("event already exists");
+      setIsLoading(false);
+      alert("event already exists");
+    } else if (response.status === 500) {
+      console.log("error");
+      setIsLoading(false);
+      alert("error");
+    } else if (response.status === 404) {
+      console.log("event not found");
+      setIsLoading(false);
+      alert("event not found");
+    } else if (response.status === 200) {
+      console.log("event deleted");
+      setIsLoading(false);
+      alert("event deleted");
+      fetchEvents();
+    }
+
+    if (!response.ok) {
+      console.error('Error deleting event:', response.statusText);
+    }
+  };
+
 
   return (
     <div className="flex flex-col items-center justify-center w-full bg-white pt-20 overflow-x-hidden">
 
-      {/* create a loader using conditional rendering for isLoading using beautiful tailwind css animation , add a circle loading animation using tailwind css*/}
+      {/* CIRCLE LOADING ANIMATION */}
       {isLoading && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-100 bg-opacity-50 z-50">
           <div className="loader">
@@ -200,7 +598,7 @@ export default function Admin({ initialLawyers }) {
     
       <Navbar textColor="black" />
 
-       {/* Overlay with Framer Motion */}
+       {/* OVERLAY FOR LAWYER POPUP */}
        <AnimatePresence>
         {overlay && (
           <>
@@ -216,7 +614,7 @@ export default function Admin({ initialLawyers }) {
 
             {/* content card */}
             <motion.div
-              className="fixed inset-0 flex items-center justify-center z-50 p-4"
+              className="fixed inset-0 flex items-center justify-center z-[9999] p-4"
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
@@ -224,8 +622,16 @@ export default function Admin({ initialLawyers }) {
             >
               <div className="relative bg-white rounded-2xl shadow-2xl overflow-hidden max-w-lg w-full">
                 {/* close button */}
-                <button style={{ pointerEvents: "auto" }} onClick={() => setOverlay(false)} className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 z-50">
-                  X
+                <button style={{ pointerEvents: "auto" }} onClick={() => setOverlay(false)} className="absolute top-4 right-2 text-gray-600 hover:text-gray-800 z-50">
+                  <X className="h-6 w-6" />
+                </button>
+
+                <button style={{ pointerEvents: "auto" }} onClick={() => deleteLawyer(overlayLawyerId)} className="absolute top-4 right-12 text-gray-600 hover:text-gray-800 z-50">
+                  <Trash2 className="h-6 w-6" />
+                </button>
+
+                <button style={{ pointerEvents: "auto" }} onClick={() => setOverlayEvent(false)} className="absolute top-4 right-24 text-gray-600 hover:text-gray-800 z-50">
+                  <Pencil className="h-6 w-6" />
                 </button>
 
                 {/* large image */}
@@ -257,20 +663,83 @@ export default function Admin({ initialLawyers }) {
         )}
       </AnimatePresence>
 
-        <div className="relative w-4/5 my-4  flex flex-col items-center justify-center">
-        
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search..."
-            className="w-full pl-12 pr-4 py-3 rounded-md border border-gray-300 bg-gray-100 text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md"
-          />
+      {/* OVERLAY FOR EVENT POPUP */}
+       <AnimatePresence>
+        {overlayEvent && (
+          <>
+            {/* backdrop */}
+            <motion.div
+              className="fixed inset-0 bg-black/60 z-40"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setOverlayEvent(false)}
+            />
+
+            {/* content card */}
+            <motion.div
+              className="fixed inset-0 flex items-center justify-center z-[9999] p-4"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            >
+              <div className="relative bg-white rounded-2xl shadow-2xl overflow-hidden max-w-lg w-full">
+                {/* close button */}
+                <button style={{ pointerEvents: "auto" }} onClick={() => setOverlayEvent(false)} className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 z-50">
+                  <X className="w-6 h-6 stroke-2 text-gray-700" />
+                </button>
+
+                <button style={{ pointerEvents: "auto" }} onClick={() => deleteEvent(overlayEventId)} className="absolute top-4 right-14 text-gray-600 hover:text-gray-800 z-50">
+                  <Trash2 className="h-6 w-6" />
+                </button>
+
+                <button style={{ pointerEvents: "auto" }} onClick={() => setOverlayEvent(false)} className="absolute top-4 right-24 text-gray-600 hover:text-gray-800 z-50">
+                  <Pencil className="h-6 w-6" />
+                </button>
+
+                {/* large image */}
+                <div className="w-full h-80 relative">
+                  <Image
+                    src={overlayEventPhoto || "https://via.placeholder.com/300"} // default image if no photo is available
+                    alt="Event Image"
+                    layout="fill"
+                    objectFit="cover"
+                    className="w-4/5 h-72 object-contain"
+                  />
+                </div>
+
+                {/* details */}
+                <div className="p-6 space-y-2">
+                  <p className="font-bold text-black text-lg">
+                   {overlayEventName}
+                  </p>
+                  <p className="text-gray-700">
+                  <span className="text-gray-600"> location: </span> {overlayEventLocation}
+                  </p>
+                  <p className="text-gray-700">
+                  <span className="text-gray-600"> start date: </span> {new Date(overlayEventStartDate).toLocaleDateString('en-US', { weekday: 'long',month: 'long', day: 'numeric', year: 'numeric' })} {new Date(overlayEventStartDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
+                  </p>
+                  <p className="text-gray-700">
+                  <span className="text-gray-600"> end date: </span> {new Date(overlayEventEndDate).toLocaleDateString('en-US', { weekday: 'long',month: 'long', day: 'numeric', year: 'numeric' })} {new Date(overlayEventEndDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
+                  </p>
+                  <p className="text-gray-600 text-sm mt-2">
+                   {overlayEventDescription}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* SEARCH BAR */}
+        <div className="relative w-4/5 my-4  flex flex-col items-center justify-center">      
+          <input type="text" value={query} onChange={(e) =>{ setQuery(e.target.value); search(); }} placeholder="Search Lawyers" className="w-full pl-12 pr-4 py-3 rounded-md border border-gray-300 bg-gray-100 text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md" />
         </div>
 
-      
-      {/* TABLE */}
-
+      {/* SEARCH TABLE FOR USERS */}
       <div className="flex flex-col justify-evenly items-center w-full sm:w-4/5 px-4 ">
       {/* A TABLE COMPONENT */}
 
@@ -278,25 +747,54 @@ export default function Admin({ initialLawyers }) {
 
         return (
 
-        <div key={index} className="flex flex-row justify-evenly items-center p-4  w-full rounded-md">
-          <div onClick={() => { setOverlayLawyerName(lawyer.username); setOverlayLawyerEmail(lawyer.email); setOverlayLawyerPhoto(lawyer.photo); setOverlayLawyerDescription(lawyer.description); setOverlay(true) }}  className="flex flex-row justify-start flex-wrap items-center py-2 w-full sm:w-4/5">
+        <div key={index} className="flex flex-row justify-evenly items-center p-4  w-full rounded-md z-9999">
+          <div onClick={() => { setOverlayLawyerName(lawyer.username); setOverlayLawyerEmail(lawyer.email); setOverlayLawyerId(lawyer._id); setOverlayLawyerPhoto(lawyer.photo); setOverlayLawyerDescription(lawyer.description); setOverlay(true) }}  className="flex flex-row justify-start flex-wrap items-center py-2 w-full sm:w-4/5">
              {lawyer.photo ? ( <Image height={60} width={60} className="sm:rounded-md rounded-full h-10 w-10" src={lawyer.photo || "https://via.placeholder.com/60"} alt={lawyer.username || "Lawyer Image"} />) : ( <div className="w-[60px] h-[60px] bg-gray-300 rounded-md" />)}
             <div className="flex flex-col justify-start items-center py-2 ml-4">
               <span className="text-black self-start font-semibold banner-text ">{lawyer.username}</span>
               <span className="text-gray-400 self-start font-semibold banner-text ">{lawyer.email}</span>
             </div>
           </div>
-          <button onClick={() => { setOverlayLawyerName(lawyer.username); setOverlayLawyerEmail(lawyer.email); setOverlayLawyerPhoto(lawyer.photo); setOverlayLawyerDescription(lawyer.description); setOverlay(true) }} className="text-gray-700 text-sm hidden sm:block bg-gray-100 font-normal banner-text uppercase w-48 py-2 rounded-md text-center">view details</button>
+          <button onClick={() => { setOverlayLawyerName(lawyer.username); setOverlayLawyerEmail(lawyer.email); setOverlayLawyerPhoto(lawyer.photo); setOverlayLawyerDescription(lawyer.description); setOverlayLawyerId(lawyer._id); setOverlay(true) }} className="text-gray-700 text-sm hidden sm:block bg-gray-100 font-normal banner-text uppercase w-48 py-2 rounded-md text-center">view details</button>
         </div> 
         )
       })}
 
       </div>
 
-        {/* create  a form in tailwind css to upload username, password, phone number, description, upload input for photo, also create a button type file input and it should look like upload file with high end animation using tailwind css, create a highly responsive form, it should cover like 3/5 width of full width */}
+      {/* SEARCH BAR FOR EVENTS */}
+        <div className="relative w-4/5 my-4  flex flex-col items-center justify-center">      
+          <input value={eventQuery} onChange={(e)=> { setEventQuery(e.target.value); searchEvents(); }} type="text" placeholder="Search Events" className="w-full pl-12 pr-4 py-3 rounded-md border border-gray-300 bg-gray-100 text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md" />
+        </div>
+
+      {/* TABLE FOR EVENTS */}
+      <div className="flex flex-col justify-evenly items-center w-full sm:w-4/5 px-4 ">
+      {/* A TABLE COMPONENT */}
+
+      {events.map((event, index)=>{
+
+        return (
+
+        <div key={index} className="flex flex-row justify-evenly items-center p-4  w-full rounded-md">
+          <div onClick={() => { setOverlayEventName(event.title); setOverlayEventLocation(event.location); setOverlayEventStartDate(event.startDate); setOverlayEventEndDate(event.endDate); setOverlayEventDescription(event.description); setOverlayEventPhoto(event.photo); setOverlayEventId(event._id); setOverlayEvent(true) }} className="flex flex-row justify-start flex-wrap items-center py-2 w-full sm:w-4/5">
+             {event.photo ? ( <Image height={60} width={60} className="sm:rounded-md rounded-full h-10 w-10" src={event.photo || "https://via.placeholder.com/60"} alt={event.name || "Event Image"} />) : ( <div className="w-[60px] h-[60px] bg-gray-300 rounded-md" />)}
+            <div className="flex flex-col justify-start items-center py-2 ml-4">
+              <span className="text-black self-start font-semibold banner-text ">{event.title}</span>
+              <span className="text-gray-400 self-start font-semibold banner-text ">{event.description}</span>
+            </div>
+          </div>
+          <button className="text-gray-700 text-sm hidden sm:block bg-gray-100 font-normal banner-text uppercase w-48 py-2 rounded-md text-center">view details</button>
+        </div>
+        )
+      })}
+
+      </div>
+
+        {/* ALL FORMS FOR DATA UPLOAD */}
         <div className="w-full my-4 flex flex-row items-center justify-center flex-wrap space-x-0 sm:space-x-20 space-y-10 sm:space-y-0 bg-gray-100 rounded-lg shadow-md p-6">
           
-          <form className="max-w-6xl flex flex-col items-center justify-center" onSubmit={handleSubmit}>
+        {/* LAWYERS FORM */}
+        <form className="max-w-6xl self-start flex flex-col items-center justify-center" onSubmit={handleSubmit}>
             <h2 className="text-2xl text-gray-800 font-bold mb-4 uppercase">Create New Lawyer</h2>
             <input type="text" value={username} onChange={(e)=> setUsername(e.target.value)} placeholder="Username" className="w-full p-3 mb-4 rounded-md border border-gray-300 bg-white text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md" />
             <input type="email" value={email} onChange={(e)=> setEmail(e.target.value)} placeholder="Email" className="w-full p-3 mb-4 rounded-md border border-gray-300 bg-white text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md" />
@@ -310,60 +808,47 @@ export default function Admin({ initialLawyers }) {
             </label>
 
             <button type="submit" className="w-full p-3 font-bold bg-blue-500 uppercase hover:scale-105 text-white rounded-md hover:bg-blue-600 transition-all duration-300 shadow-sm focus:shadow-md">Create lawyer</button>
-          </form>
+        </form>
 
-
-           {/*  create an another form adding inputs, name, link, link type (which is a dropdown list), page name */}
-        <form className="max-w-6xl self-start flex flex-col items-center justify-center bg-gray-100">
+        {/* LINKS FORM */}
+        <form onSubmit={addLink} className="max-w-6xl self-start flex flex-col items-center justify-center bg-gray-100">
           <h2 className="text-2xl font-bold mb-4 text-gray-800 uppercase">add important links</h2>
-          <input type="text" placeholder="Title" className="w-full p-3 mb-4 rounded-md border border-gray-300 bg-white text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md" />
-          <input type="text" placeholder="description" className="w-full p-3 mb-4 rounded-md border border-gray-300 bg-white text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md" />
-          <input type="text" placeholder="Link" className="w-full p-3 mb-4 rounded-md border border-gray-300 bg-white text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md" />
-          <select className="w-full p-3 mb-4 rounded-md border border-gray-300 bg-white text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md">
-            <option value="">Select Link Type</option>
-            <option value="type1">photo</option>
-            <option value="type2">hyperlink</option>
+          <input type="text" value={linkTitle} onChange={(e)=> setLinkTitle(e.target.value)} placeholder="Title" className="w-full p-3 mb-4 rounded-md border border-gray-300 bg-white text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md" />
+          <input type="text" value={linkDescription} onChange={(e)=> setLinkDescription(e.target.value)} placeholder="description" className="w-full p-3 mb-4 rounded-md border border-gray-300 bg-white text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md" />
+          <input type="text" value={linkUrl} onChange={(e)=> setLinkUrl(e.target.value)} placeholder="Link" className="w-full p-3 mb-4 rounded-md border border-gray-300 bg-white text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md" />
+          <select onChange={(e)=> setLinkType(e.target.value)} className="w-full p-3 mb-4 rounded-md border border-gray-300 bg-white text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md">
+            <option value="photo">photo</option>
+            <option value="hyperlink">hyperlink</option>
+            <option value="pdf">PDF</option>
           </select>
-          <select className="w-full p-3 mb-4 rounded-md border border-gray-300 bg-white text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md">
-            <option value="">Category</option>
-            <option value="type1">Carousels</option>
-            <option value="type2">Gallery Image</option>
-            <option value="type3">Footer Links (PRACTICE AREAS)</option>
-            <option value="type4">Footer Links (COMPANY)</option>
+          <select onChange={(e)=> setLinkCategory(e.target.value)} className="w-full p-3 mb-4 rounded-md border border-gray-300 bg-white text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md">
+            <option value="carousels-1">Gallery Carousel 1</option>
+            <option value="carousels-2">Gallery Carousel 2</option>
           </select>
           <button type="submit" className="w-full p-3 bg-blue-500 text-white hover:scale-105 rounded-md uppercase font-bold hover:bg-blue-600 transition-all duration-300 shadow-sm focus:shadow-md">add link</button>
         </form>
 
-
-        <form className="max-w-6xl self-start flex flex-col items-center justify-center bg-gray-100">
+        {/* EVENTS FORM */}
+        <form onSubmit={postEvent} className="max-w-6xl self-start flex flex-col items-center justify-center bg-gray-100">
           <h2 className="text-2xl font-bold mb-4 text-gray-800 uppercase">create event</h2>
-          <input type="text" placeholder="event name" className="w-full p-3 mb-4 rounded-md border border-gray-300 bg-white text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md" />
-          <input type="text" placeholder="description" className="w-full p-3 mb-4 rounded-md border border-gray-300 bg-white text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md" />
+          <input type="text" value={eventName} onChange={(e) => setEventName(e.target.value)} placeholder="event name" className="w-full p-3 mb-4 rounded-md border border-gray-300 bg-white text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md" />
+          <input type="text" value={eventDescription} onChange={(e) => setEventDescription(e.target.value)} placeholder="description" className="w-full p-3 mb-4 rounded-md border border-gray-300 bg-white text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md" />
+          <input type="text" value={eventLocation} onChange={(e) => setEventLocation(e.target.value)} placeholder="location" className="w-full p-3 mb-4 rounded-md border border-gray-300 bg-white text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md" />
           <h3 className="w-full text-left text-gray-700 font-bold text-base mt-2 uppercase"> start date </h3>
           <DatePicker selected={startDate} className='text-gray-700 mt-2' onChange={(date) => setStartDate(date)} showTimeSelect dateFormat="Pp"  />
           <h3 className="w-full text-left text-gray-700 font-bold text-base mt-4 uppercase"> end date </h3>
           <DatePicker className='text-gray-700 mt-2' selected={endDate} onChange={(date) => setEndDate(date)} showTimeSelect dateFormat="Pp"  />;
-          <select className="w-full p-3 mb-4 rounded-md border border-gray-300 bg-white text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md">
-            <option value="">Select Event Type</option>
-            <option value="type1">Type 1</option>
-            <option value="type2">Type 2</option>
-            <option value="type3">Type 3</option>
-          </select>
+          <label className="flex items-center justify-center w-full p-3 mb-4 rounded-md border border-gray-300 bg-white text-gray-700 cursor-pointer hover:bg-gray-200 transition-all duration-300 shadow-sm focus:shadow-md">
+              Upload Photo
+              <input type="file" onChange={handleEventFileUpload} className="hidden" />
+          </label>
           <button type="submit" className="w-full p-3 bg-blue-500 text-white uppercase hover:scale-105 rounded-md hover:bg-blue-600 transition-all duration-300 shadow-sm focus:shadow-md font-bold">Add Event</button>
         </form>
 
-
         </div>
-
-
-       
-        {/* create a table to show all the users, with search functionality, and also add a delete button for each user, and also add a edit button for each user */}
-     
-        
 
         <Footer />
       
-
     </div>
   );
 }

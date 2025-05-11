@@ -1,34 +1,11 @@
-'use client';
+import GalleryPage from "./gallery.jsx";
 
-import { useState } from 'react';
-import { Search } from 'lucide-react'; // search icon from lucide-react (already available in Next 15)
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer"
-import Collage from '@/components/collage';
-import OverlappingImages from '@/components/photographs';
+const base_url = "http://localhost:8080";
 
-export default function Directory() {
-  const [query, setQuery] = useState('');
+export default async function GallerySite(){
+  const res = await fetch(`${base_url}/links`, { cache: "no-store" });
+  const json = await res.json();
 
-  return (
-    <div className="relative flex flex-col items-center justify-center w-full bg-white pt-20">
+  return <GalleryPage initialLinks={json.links || []} />;
 
-        <Navbar textColor="black" />
-
-        <div className="flex flex-col items-center justify-center w-full">
-        <OverlappingImages />
-        </div>
-
-        <div className="text-center mb-10">
-            <h1 className="text-3xl sm:text-4xl font-extrabold uppercase text-black">Our Legal Team in Action</h1>
-            <p className="text-gray-600 text-sm sm:text-base mt-2">
-                  Real professionals. Real experience. Real trust.
-            </p>
-        </div>
-
-        <Collage />
-
-      <Footer />
-    </div>
-  );
 }

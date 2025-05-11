@@ -11,6 +11,8 @@ import { FaYoutube } from "react-icons/fa";
 import { FaMedium } from "react-icons/fa6";
 import { FaGithubSquare } from "react-icons/fa";
 import { FaBars } from "react-icons/fa";
+import { ChevronsRight } from "lucide-react";
+
 
 function Navbar({ textColor }){
 
@@ -33,7 +35,7 @@ function Navbar({ textColor }){
   ];
 
   return (
-    <div className="z-[9999] w-full h-20 flex flex-row justify-between fixed top-0 left-0 bg-white">
+    <div className="z-[9998] w-full h-20 flex flex-row justify-between fixed top-0 left-0 bg-white">
       <Sidebar isVisible={isSidebarVisible} toggleSidebar={toggleSidebar} />
       {hovered && (
           <motion.div
@@ -83,7 +85,7 @@ function Navbar({ textColor }){
         <Link href="/" className="group flex items-center gap-4 p-4 border-b-2 border-gray-200 text-black hover:text-white hover:bg-black">
           <span className="font-extrabold uppercase">news</span>
         </Link>
-        <Link href="/" className="group flex items-center gap-4 p-4 border-b-2 border-gray-200 text-black hover:text-white hover:bg-black">
+        <Link href="/pay-fee" className="group flex items-center gap-4 p-4 border-b-2 border-gray-200 text-black hover:text-white hover:bg-black">
           <span className="font-extrabold uppercase">pay fee</span>
         </Link>
       </motion.div>
@@ -103,7 +105,6 @@ function Navbar({ textColor }){
 
         {/* BETWEEN LINKS */}
         <div className={`flex flex-row justify-center items-center sm:px-10 px-2 text-base uppercase text-${textColor}`}>
-          <Link href="/about"><span className="hidden sm:block font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text">about</span></Link>
           <Link href="/events"><span className="hidden sm:block font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text">events</span></Link>
           <Link href="/gallery"><span className="hidden sm:block font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text">gallery</span></Link>
           <Link href="/directory"><span className="hidden sm:block font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text">directory</span></Link>

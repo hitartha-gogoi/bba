@@ -1,25 +1,13 @@
-'use client';
+import Event from "./events.jsx"; // Note: no "use client" here
 
-import { useState } from 'react';
-import { Search } from 'lucide-react'; // search icon from lucide-react (already available in Next 15)
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer"
-import Carousel from '@/components/carousel';
-import EventList from '@/components/event-list';
+const base_url = "https://bba-backend.onrender.com";
 
-export default function Directory() {
-  const [query, setQuery] = useState('');
+// This is a Server Component by default.  
+// Fetch happens here—on the server—so HTML includes your data.
 
+export default async function EventPage() {
+  const res = await fetch(`${base_url}/events`, { cache: "no-store" });
+  const json = await res.json();
 
-
-  return (
-    <div className="relative flex flex-col items-center justify-center w-full bg-white pt-20">
-      
-        <Navbar textColor="black" />
-        <Carousel />
-        <EventList />
-
-      <Footer />
-    </div>
-  );
+  return <Event initialEvents={json.events || []}  />;
 }

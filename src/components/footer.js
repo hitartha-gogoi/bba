@@ -35,44 +35,6 @@ function Footer(){
                 </Link>
             </div>
 
-
-
-
-            {/* ONE COLUMN */}
-            <div className="flex flex-col justify-center items-center space-y-2 flex-wrap p-6">
-
-              <h2 className="text-white text-left font-bold uppercase text-3xl mx-4 banner-text">practice areas</h2>
-
-                <Link className="self-start" href="/">
-                  <span className="text-left banner-text text-gray-300 text-sm font-normal hover:shadow-xl hover:text-blue-400 transition-transform duration-200 ease-in-out mx-4 banner-text">General Counsel</span>
-                </Link>
-
-                <Link className="self-start" href="/">
-                  <span className="text-left banner-text text-gray-300 text-sm  font-normal hover:shadow-xl hover:text-blue-400 transition-transform duration-200 ease-in-out mx-4 banner-text">Funding and Investment</span>
-                </Link>
-
-                <Link className="self-start" href="/">
-                  <span className="text-left banner-text text-gray-300 text-sm  font-normal hover:shadow-xl hover:text-blue-400 transition-transform duration-200 ease-in-out mx-4 banner-text">Mergers and Acquisition</span>
-                </Link>
-
-                <Link className="self-start" href="/">
-                  <span className="text-left banner-text text-gray-300 text-sm  font-normal hover:shadow-xl hover:text-blue-400 transition-transform duration-200 ease-in-out mx-4 banner-text">Intellectual property</span>
-                </Link>
-
-                <Link className="self-start" href="/">
-                  <span className="text-left banner-text text-gray-300 text-sm font-normal hover:shadow-xl hover:text-blue-400 transition-transform duration-200 ease-in-out mx-4 banner-text">Employment Law</span>
-                </Link>
-
-                <Link className="self-start" href="/">
-                  <span className="text-left banner-text text-gray-300 text-sm font-normal hover:shadow-xl hover:text-blue-400 transition-transform duration-200 ease-in-out mx-4 banner-text">Business Dispute Services</span>
-                </Link>
-
-                <Link className="self-start" href="/">
-                  <span className="text-left banner-text text-gray-300 text-sm font-normal hover:shadow-xl hover:text-blue-400 transition-transform duration-200 ease-in-out mx-4 banner-text">Real Estate Law</span>
-                </Link>
-            </div>
-
-
            {/* ONE COLUMN */}
             <div className="flex flex-col justify-center items-center space-y-2 flex-wrap self-start p-6">
 

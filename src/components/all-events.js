@@ -27,13 +27,9 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
 };
 
-export default function EventList({ events, dateSelected }) {
+export default function AllEvents({ events }) {
 
-   const specialEvents = events.filter((event) =>
-    event.startDate
-      ? isSameDay(new Date(event.startDate), new Date(dateSelected))
-      : false
-  );
+   const specialEvents = events || []
 
   return (
     <motion.div
@@ -64,24 +60,24 @@ export default function EventList({ events, dateSelected }) {
               transition={{ delay: i * 0.15 }}
             />
 
-             <p className="text-sm text-gray-600 mb-1 hover:text-white">{new Date(event.startDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true, })}</p>
+             <p className="text-sm text-gray-600 mb-1">{new Date(event.startDate).toLocaleDateString('en-US', { weekday: 'long',month: 'long', day: 'numeric', year: 'numeric' })} {new Date(event.startDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
 
             <motion.div
               whileHover={{ scale: 1.015 }}
               className="flex justify-between items-center bg-white rounded-xl p-4 shadow-lg gap-4 transition-all duration-200 hover:bg-blue-800 hover:text-white"
             >
               <div className="flex flex-col gap-2">
-                <p className="text-sm ">Starting time: {new Date(event.startDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true, })}</p>
+                <p className="text-sm text-gray-500">Starting time: {new Date(event.startDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true, })}</p>
                 <h3 className="text-lg font-semibold">{event.title}</h3>
-                <p className="text-sm">{event.description}</p>
-                <p className="text-sm">
-                  <FaMapMarkerAlt className="inline" /> {event.location}
+                <p className="text-sm text-gray-500">{event.description}</p>
+                <p className="text-sm text-gray-400">
+                  <FaMapMarkerAlt className="inline text-gray-400" /> {event.location}
                 </p>
 
                 <EventStatusBadge startDate={event.startDate} endDate={event.endDate} />
 
                 <div className="flex items-center gap-1 mt-1">
-                  <span className="text-sm"> Departure Time: {new Date(event.endDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true, })}</span>
+                  <span className="text-sm text-gray-400"> Departure Time: {new Date(event.endDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true, })}</span>
                 </div>
               </div>
               <img
