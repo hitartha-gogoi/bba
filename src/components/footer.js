@@ -38,26 +38,30 @@ function Footer(){
            {/* ONE COLUMN */}
             <div className="flex flex-col justify-center items-center space-y-2 flex-wrap self-start p-6">
 
-              <h2 className="text-white text-left font-bold uppercase text-3xl mx-4 banner-text">Company</h2>
+              <h2 className="text-white text-left font-bold uppercase text-3xl mx-4 banner-text">Links</h2>
 
-                <Link className="self-start" href="/">
-                  <span className="text-left banner-text text-gray-300 text-sm font-normal hover:shadow-xl hover:text-blue-400 transition-transform duration-200 ease-in-out mx-4 banner-text">company</span>
+                <Link className="self-start" href="/contact">
+                  <span className="text-left banner-text text-gray-300 text-sm font-normal hover:shadow-xl hover:text-blue-400 transition-transform duration-200 ease-in-out mx-4 banner-text">Contact Us</span>
                 </Link>
 
                 <Link className="self-start" href="/">
                   <span className="text-left banner-text text-gray-300 text-sm  font-normal hover:shadow-xl hover:text-blue-400 transition-transform duration-200 ease-in-out mx-4 banner-text">About Us</span>
                 </Link>
 
-                <Link className="self-start" href="/">
-                  <span className="text-left banner-text text-gray-300 text-sm  font-normal hover:shadow-xl hover:text-blue-400 transition-transform duration-200 ease-in-out mx-4 banner-text">Our Team</span>
+                <Link className="self-start" href="/terms-and-conditions">
+                  <span className="text-left banner-text text-gray-300 text-sm  font-normal hover:shadow-xl hover:text-blue-400 transition-transform duration-200 ease-in-out mx-4 banner-text">Terms and Conditions</span>
                 </Link>
 
-                <Link className="self-start" href="/">
-                  <span className="text-left banner-text text-gray-300 text-sm  font-normal hover:shadow-xl hover:text-blue-400 transition-transform duration-200 ease-in-out mx-4 banner-text">Blog</span>
+                <Link className="self-start" href="/privacy-policy">
+                  <span className="text-left banner-text text-gray-300 text-sm  font-normal hover:shadow-xl hover:text-blue-400 transition-transform duration-200 ease-in-out mx-4 banner-text">Privacy Policy</span>
                 </Link>
 
-                <Link className="self-start" href="/">
-                  <span className="text-left banner-text text-gray-300 text-sm font-normal hover:shadow-xl hover:text-blue-400 transition-transform duration-200 ease-in-out mx-4 banner-text">Contact</span>
+                <Link className="self-start" href="/return-refund-shipping">
+                  <span className="text-left banner-text text-gray-300 text-sm font-normal hover:shadow-xl hover:text-blue-400 transition-transform duration-200 ease-in-out mx-4 banner-text">Return / Refund / Shipping</span>
+                </Link>
+
+                <Link className="self-start" href="/pricing-policy">
+                  <span className="text-left banner-text text-gray-300 text-sm font-normal hover:shadow-xl hover:text-blue-400 transition-transform duration-200 ease-in-out mx-4 banner-text">Pricing Policy</span>
                 </Link>
             </div>
 
@@ -66,14 +70,15 @@ function Footer(){
         </div>
 
 
-      <div className="mt-10">
+      <div className="mt-10 w-full flex flex-col justify-center items-center">
         <span className="text-white font-bold text-center text-xl uppercase"> MADE WITH NEXT JS</span>
         <div className="flex flex-row justify-evenly items-center w-52 my-4">
           <AiFillInstagram className="h-8 w-8 text-white hover:scale-110 transition-all duration-150 ease-out " />
           <AiFillGithub className="h-8 w-8 text-white hover:scale-110 transition-all duration-150 ease-out " />
           <AiFillTwitterSquare className="h-8 w-8 text-white hover:scale-110 transition-all duration-150 ease-out " />
         </div>
-        <span className="text-gray-300 font-thin text-center text-base">© all copyrights reserved, 2025</span>
+        <span className="text-gray-300 font-thin text-center text-base">© babahadurgarh.com. All Rights Reserved</span>
+
       </div>
     </div>
     

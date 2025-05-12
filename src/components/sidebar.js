@@ -68,7 +68,7 @@ function Sidebar ({ isVisible, toggleSidebar }){
     </div>
     </Link>
 
-    <Link href="/">
+    <Link href="https://judgments.ecourts.gov.in/pdfsearch/?p=pdf_search/index&escr_flag=Y">
     <div className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 text-black hover:text-blue-900 hover:border-blue-900">
     <span className="inline h-4 w-4">  </span>
     <Typography variant="subtitle6" className="relative right-6 font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text uppercase"> judgements </Typography>
@@ -119,7 +119,7 @@ function Sidebar ({ isVisible, toggleSidebar }){
     </div>
     </Link>
 
-    <Link href="/">
+    <Link href="https://jhajjar.dcourts.gov.in/list-of-judges/">
     <div className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 text-black hover:text-blue-900 hover:border-blue-900">
     <span className="inline h-4 w-4">  </span>
     <Typography variant="subtitle6" className="relative right-4 font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text uppercase"> sitting judges </Typography>
