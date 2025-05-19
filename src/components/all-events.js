@@ -53,12 +53,7 @@ export default function AllEvents({ events }) {
           >
             {
             <>
-            <motion.div
-              className="absolute -left-2.5 top-2 w-3 h-3 bg-blue-800 rounded-full"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: i * 0.15 }}
-            />
+            
 
              <p className="text-sm text-gray-600 mb-1">{new Date(event.startDate).toLocaleDateString('en-US', { weekday: 'long',month: 'long', day: 'numeric', year: 'numeric' })} {new Date(event.startDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
 

@@ -4,10 +4,21 @@ import "react-datepicker/dist/react-datepicker.css";
 import { motion, AnimatePresence } from "framer-motion";
 import "tailwindcss/tailwind.css";
 import EventList from "@/components/event-list";
+import { FiDownload } from "react-icons/fi";
 
 const Calendar = ({ events }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
+
+
+  const handleDownload = () => {
+    const link = document.createElement("a");
+    link.href = "/calendar.pdf"; // Change this to your file URL
+    link.download = "file.pdf"; // Suggested filename
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const isSameDay = (date1, date2) => {
     return (
@@ -43,8 +54,8 @@ const Calendar = ({ events }) => {
         transition={{ duration: 0.8 }}
         className="w-full max-w-4xl bg-white rounded-2xl shadow-2xl p-4"
       >
-        <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
-          Calendar
+        <h1 className="text-3xl font-bold mb-6 text-center text-gray-800 ">
+          Calendar  <FiDownload className="text-gray-700 bg-gray-300 rounded-full ml-2  mr-2 scale-125 hover:scale-150 transition-transform duration-200 ease-in-out cursor-pointer w-5 h-5 inline"  onClick={handleDownload} />
         </h1>
 
         <DatePicker
@@ -56,9 +67,10 @@ const Calendar = ({ events }) => {
             const baseClass =
               "transition duration-300 ease-in-out hover:bg-blue-300 rounded-full ";
             const isSpecial = specialEventDates.some((d) => isSameDay(d, date));
-            return isSpecial
-              ? `${baseClass} bg-red-500 text-white font-semibold`
-              : baseClass;
+            const isWeekend = date.getDay() === 0 || date.getDay() === 6; // Sunday or Saturday
+            if (isSpecial) return `${baseClass} bg-red-500 text-white font-semibold`;
+            if (isWeekend) return `${baseClass} text-red-500 font-semibold`;
+            return baseClass;
           }}
         />
       </motion.div>

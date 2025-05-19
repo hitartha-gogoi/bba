@@ -26,10 +26,10 @@ function Sidebar ({ isVisible, toggleSidebar }){
     </Link>
 
     
-    <Link href="/events">
+    <Link href="/calendar">
     <div className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 text-black hover:text-blue-900 hover:border-blue-900">
     <span className="inline h-4 w-4">  </span>
-    <Typography variant="subtitle6" className="relative right-6 font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text uppercase"> events </Typography>
+    <Typography variant="subtitle6" className="relative right-6 font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text uppercase"> calendar </Typography>
     </div>
     </Link>
 
@@ -54,12 +54,6 @@ function Sidebar ({ isVisible, toggleSidebar }){
     </div>
     </Link>
 
-    <Link href="/calendar">
-    <div className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 text-black hover:text-blue-900 hover:border-blue-900">
-    <span className="inline h-4 w-4">  </span>
-    <Typography variant="subtitle6" className="relative right-6 font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text uppercase"> calendar </Typography>
-    </div>
-    </Link>
 
     <Link href="/pay-fee">
     <div className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 text-black hover:text-blue-900 hover:border-blue-900">
@@ -75,44 +69,15 @@ function Sidebar ({ isVisible, toggleSidebar }){
     </div>
     </Link>
 
-    <Link href="/">
-    <div className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 text-black hover:text-blue-900 hover:border-blue-900">
-    <span className="inline h-4 w-4">  </span>
-    <Typography variant="subtitle6" className="relative right-2 font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text uppercase"> upcoming events </Typography>
-    </div>
-    </Link>
 
-    <Link href="/">
-    <div className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 text-black hover:text-blue-900 hover:border-blue-900">
-    <span className="inline h-4 w-4">  </span>
-    <Typography variant="subtitle6" className="relative right-6 font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text uppercase"> news </Typography>
-    </div>
-    </Link>
-
-    <Link href="/">
-    <div className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 text-black hover:text-blue-900 hover:border-blue-900">
-    <span className="inline h-4 w-4">  </span>
-    <Typography variant="subtitle6" className="relative font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text uppercase"> executive committee </Typography>
-    </div>
-    </Link>
-
-
-    <Link href="/">
-    <div className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 text-black hover:text-blue-900 hover:border-blue-900">
-    <span className="inline h-4 w-4">  </span>
-    <Typography variant="subtitle6" className="relative font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text uppercase"> bab membership </Typography>
-    </div>
-    </Link>
-
-
-    <Link href="/">
+    <Link href="/voterlist.pdf">
     <div className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 text-black hover:text-blue-900 hover:border-blue-900">
     <span className="inline h-4 w-4">  </span>
     <Typography variant="subtitle6" className="relative right-6 font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text uppercase"> voterlist </Typography>
     </div>
     </Link>
 
-    <Link href="/">
+    <Link href="/download-form.pdf">
     <div className="flex justify-evenly items-center py-2 w-48 border-y-2 border-gray-800 text-black hover:text-blue-900 hover:border-blue-900">
     <span className="inline h-4 w-4">  </span>
     <Typography variant="subtitle6" className="relative font-bold hover:shadow-xl transition-transform duration-200 ease-in-out mx-4 banner-text uppercase"> download forms </Typography>

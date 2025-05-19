@@ -4,19 +4,11 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { ChevronsRight } from "lucide-react";
 import { motion, AnimatePresence } from 'framer-motion';
-
-const sampleImages = [
-  "https://babahadurgarh.com/admin/uploads/c8d4eee57ceaf0707eed40199932f8a7.jpeg",
-  "https://babahadurgarh.com/admin/uploads/f7aa25ced20e4b3a18447ed6e48461ea.jpeg",
-  "https://babahadurgarh.com/admin/uploads/f7aa25ced20e4b3a18447ed6e48461ea.jpeg",
-  "https://babahadurgarh.com/admin/uploads/8f93db0e6c993dc16ffbf54f0c042ee8.jpeg",
-  "https://babahadurgarh.com/admin/uploads/318e41bc02f71c5294ceed19f630095c.jpeg",
-  "https://babahadurgarh.com/admin/uploads/318e41bc02f71c5294ceed19f630095c.jpeg",
-  "https://babahadurgarh.com/admin/uploads/318e41bc02f71c5294ceed19f630095c.jpeg",
-  "https://babahadurgarh.com/admin/uploads/60d4ed1434bb796688957aa3be48d668.jpeg",
-];
+import { Trash2, X, Pencil } from 'lucide-react';
 
 const Gallery = ({ title, category, items }) => {
+
+  const loggedIn = localStorage.getItem("token")
 
   useEffect(()=>{
     const filteredItems = items.filter(item => item.category === category);

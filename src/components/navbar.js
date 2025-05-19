@@ -11,33 +11,21 @@ import { FaBars } from "react-icons/fa";
 
 function Navbar({ textColor }) {
   const [isSidebarVisible, setSidebarVisible] = useState(false);
-  const [socialsOpen, setSocialsOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
 
   const toggleSidebar = () => {
     setSidebarVisible(!isSidebarVisible);
   };
 
-  const socials = [
-    { name: 'Instagram', icon: <AiFillInstagram className="text-black group-hover:text-white transition" size={20} />, link: 'https://instagram.com' },
-    { name: 'YouTube', icon: <FaYoutube size={20} className="text-black group-hover:text-white transition" />, link: 'https://youtube.com' },
-    { name: 'GitHub', icon: <FaGithubSquare size={20} className="text-black group-hover:text-white transition" />, link: 'https://github.com' },
-    { name: 'X', icon: <FaXTwitter size={20} className="text-black group-hover:text-white transition" />, link: 'https://x.com' },
-    { name: 'Medium', icon: <FaMedium size={20} className="text-black group-hover:text-white transition" />, link: 'https://medium.com' },
-    { name: 'Discord', icon: <FaDiscord size={20} className="text-black group-hover:text-white transition" />, link: 'https://discord.com' },
-  ];
 
   const moreItems = [
-    { name: "Calendar", href: "/" },
     { name: "Judgements and Orders", href: "https://judgments.ecourts.gov.in/pdfsearch/?p=pdf_search/index&escr_flag=Y" },
-    { name: "Upcoming Events", href: "/" },
-    { name: "Notices", href: "/" },
-    { name: "News", href: "/" },
-    { name: "Pay Fee", href: "/pay-fee" },
+    { name: "sitting judges", href: "https://jhajjar.dcourts.gov.in/list-of-judges/" },
+    { name: "voterlist", href: "/voterlist.pdf" },
+    { name: "download forms", href: "/download-form.pdf" },
   ];
 
   const closeAllPopups = () => {
-    setSocialsOpen(false);
     setMoreOpen(false);
   };
 
@@ -68,7 +56,7 @@ function Navbar({ textColor }) {
 
       {/* Nav Links */}
       <div className={`flex flex-row justify-center items-center sm:px-10 px-2 text-base uppercase text-${textColor}`}>
-        <Link href="/events"><span className="hidden sm:block font-bold hover:shadow-xl mx-4 banner-text">events</span></Link>
+        <Link href="/calendar"><span className="hidden sm:block font-bold hover:shadow-xl mx-4 banner-text">calendar</span></Link>
         <Link href="/gallery"><span className="hidden sm:block font-bold hover:shadow-xl mx-4 banner-text">gallery</span></Link>
         <Link href="/directory"><span className="hidden sm:block font-bold hover:shadow-xl mx-4 banner-text">directory</span></Link>
         
@@ -77,55 +65,21 @@ function Navbar({ textColor }) {
           onClick={(e) => {
             e.stopPropagation();
             setMoreOpen(!moreOpen);
-            setSocialsOpen(false);
           }}
         >
           more
         </span>
 
-        <span
-          className="hidden sm:block font-bold hover:shadow-xl mx-4 banner-text cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
-            setSocialsOpen(!socialsOpen);
-            setMoreOpen(false);
-          }}
-        >
-          socials
-        </span>
+        
 
         <Link href="/contact"><span className="hidden sm:block font-bold hover:shadow-xl mx-4 banner-text">contact</span></Link>
+        <Link href="/pay-fee"><span className="hidden sm:block font-bold hover:shadow-xl mx-4 banner-text">pay fee</span></Link>
       </div>
 
       {/* Sidebar Toggle */}
       <FaBars onClick={toggleSidebar} className="m-6 hover:scale-125 transition-transform duration-200 ease-in-out cursor-pointer" color="black" />
 
-      {/* Socials Popup */}
-      <AnimatePresence>
-        {socialsOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="popup-menu absolute left-[58%] -translate-x-1/2 top-full bg-white p-3 rounded-lg shadow-lg flex flex-col w-72"
-            style={{ marginTop: "8px", paddingTop: "8px" }}
-          >
-            <span className="flex items-center text-xs text-neutral-900 p-4 h-4 border-b-2 border-gray-200">SOCIALS</span>
-            {socials.map((social) => (
-              <Link
-                key={social.name}
-                href={social.link}
-                target="_blank"
-                className="group flex items-center gap-4 p-4 border-b-2 border-gray-200 text-black hover:text-white hover:bg-black"
-              >
-                {social.icon} <span className="font-extrabold uppercase">{social.name}</span>
-              </Link>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
+  
       {/* More Popup */}
       <AnimatePresence>
         {moreOpen && (

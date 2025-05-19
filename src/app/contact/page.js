@@ -6,6 +6,9 @@ import { motion } from 'framer-motion';
 import { Mail, MapPin } from 'lucide-react';
 
 export default function ContactPage() {
+
+  const base_url = "https://bba-backend.onrender.com"
+
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({
     name: '',
@@ -17,11 +20,30 @@ export default function ContactPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000); // Reset after 4s
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const res = await fetch(`${base_url}/contact`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(form),
+    });
+
+    if (res.ok) {
+      setSubmitted(true);
+      setForm({ name: '', email: '', message: '' }); // Clear form
+      setTimeout(() => setSubmitted(false), 4000);
+    } else {
+      console.error('Failed to send message:', await res.text());
+    }
+  } catch (error) {
+    console.error('Error submitting form:', error);
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-white text-black flex flex-col">
