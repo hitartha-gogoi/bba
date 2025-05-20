@@ -87,6 +87,9 @@ export default function PayFee() {
       setEnrollStatus('Enrollment Found ✅');
     } else {
       setIsEnrolled(false);
+      setFormStatus(false)
+      setPayData(prev => ({ ...prev, name: "", email: "" }));
+      setPhoneNumberStatus('Lawyer Not Found ❌');
       setEnrollStatus('Enrollment Not Found ❌');
     }
   };
