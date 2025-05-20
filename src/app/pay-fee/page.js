@@ -11,39 +11,19 @@ export default function PayFee() {
   const [payData, setPayData] = useState({
     name: '',
     email: '',
-    amount: 1500,
+    amount: 100,
     phoneNumber: '',
   });
 
   const [loading, setLoading] = useState(false);
   const [pdfLink, setPdfLink] = useState(null);
+  const [ caseTitle, setCaseTitle ] = useState("")
+  const [ courtName, setCourtName ] = useState("")
+  const [ appealNumber, setAppealNumber ] = useState("")
+  const [ paymentType, setPaymentType ] = useState("vakalatnama")
+  const [ representing, setRepresenting ] = useState("")
+  const [ versus, setVersus ] = useState("")
   const [transactionInfo, setTransactionInfo] = useState(null);
-  const router = useRouter();
-
-
-  useEffect(() => {
-    const eventSource = new EventSource(`${base_url}/real-time-connection`);
-
-    eventSource.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-
-      if (data.success && data.pdf) {
-        setTransactionInfo(data);
-        setPdfLink(data.pdf);
-        console.log('✅ Payment received!', data);
-      }
-    };
-
-    eventSource.onerror = (err) => {
-      console.error('❌ SSE error:', err);
-      eventSource.close(); // Optional: close on error
-    };
-
-    return () => {
-      eventSource.close(); // Clean up
-    };
-  }, []);
-
   const [enrollID, setEnrollID] = useState('');
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [enrollStatus, setEnrollStatus] = useState('');
@@ -59,16 +39,32 @@ export default function PayFee() {
     e.preventDefault();
     console.log('Submitting payment:', payData);
     setLoading(true);
-    const response = await fetch(`${base_url}/create-payment-link`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        amount: payData.amount * 100,
+
+    const vakalatnamaForm = {
+        amount: payData.amount,
         name: payData.name,
         email: payData.email,
         phoneNumber: payData.phoneNumber,
-        enrolmentId: enrollID
-      }),
+        enrolmentId: enrollID,
+        paymentType: "vakalatnama",
+        caseTitle, courtName,  appealNumber, representing, versus
+    }
+
+    const membershipForm = {
+        amount: payData.amount,
+        name: payData.name,
+        email: payData.email,
+        phoneNumber: payData.phoneNumber,
+        enrolmentId: enrollID,
+        paymentType: "membership",
+    }
+
+    const bodyData = paymentType === "membership" ? JSON.stringify(membershipForm) : JSON.stringify(vakalatnamaForm);
+    console.log(bodyData)
+    const response = await fetch(`${base_url}/create-payment-link`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: bodyData
     });
 
     const data = await response.json();
@@ -187,6 +183,92 @@ export default function PayFee() {
                   placeholder="Phone Number"
                 />
               </div>
+              <div>
+                <label className="block text-sm mb-1">Payment Type</label>
+                <select
+                  type="text"
+                  name="name"
+                  value={paymentType}
+                  onChange={(e)=>{ 
+                    setPaymentType(e.target.value); 
+                    console.log(e.target.value)
+                    if(e.target.value === "membership"){ 
+                      setPayData(prev => ({ ...prev, ["amount"]: 1500, }));
+                   } else {
+                      setPayData(prev => ({ ...prev, ["amount"]: 100, }));
+                   }
+                   }}
+                  required
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-800"
+                >
+                  <option value={"vakalatnama"}>Vakalatnama Fee</option>
+                  <option value={"membership"}>Membership Fee</option>
+                </select>
+              </div>
+              {paymentType == "vakalatnama" ? 
+              <>
+              <div>
+                <label className="block text-sm mb-1">Case Title</label>
+                <input
+                  type="text"
+                  name="case title"
+                  placeholder="case title"
+                  value={caseTitle}
+                  onChange={(e)=> setCaseTitle(e.target.value)}
+                  required
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-800"
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">Court Name</label>
+                <input
+                  type="text"
+                  name="Court Name"
+                  placeholder="Court Name"
+                  value={courtName}
+                  onChange={(e)=> setCourtName(e.target.value)}
+                  required
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-800"
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">Appeal Number</label>
+                <input
+                  type="text"
+                  placeholder="Appeal Number"
+                  value={appealNumber}
+                  onChange={(e)=> setAppealNumber(e.target.value)}
+                  required
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-800"
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">Representing</label>
+                <input
+                  type="text"
+                  placeholder="Representing"
+                  value={representing}
+                  onChange={(e)=> setRepresenting(e.target.value)}
+                  required
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-800"
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">Versus</label>
+                <input
+                  type="text"
+                  placeholder="Versus"
+                  value={versus}
+                  onChange={(e)=> setVersus(e.target.value)}
+                  required
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-800"
+                />
+              </div>
+              </>
+              :
+              <></>
+
+              }
             </div>
 
             <button
@@ -196,7 +278,7 @@ export default function PayFee() {
                 isEnrolled ? 'bg-blue-800 hover:bg-blue-900' : 'bg-gray-400 cursor-not-allowed'
               } text-white text-sm font-medium py-2.5 rounded-lg transition`}
             >
-              {isEnrolled ? <span>{loading ? 'Redirecting...' : 'Pay 1500 Now'}</span> : <span>Verify Enrollment to Proceed</span>}
+              {isEnrolled ? <span>{loading ? 'Redirecting...' : `Pay ${payData.amount} Now`}</span> : <span>Verify Enrollment to Proceed</span>}
             </button>
           </form>
         </div>
@@ -216,7 +298,7 @@ export default function PayFee() {
         </div>
       ) : (
        < p>{loading && ( <p className="text-sm text-gray-500 animate-pulse">Waiting for payment confirmation...</p>
-
+        
        )}</p>
       )}
       </main>
