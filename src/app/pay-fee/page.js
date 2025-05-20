@@ -89,6 +89,9 @@ export default function PayFee() {
     if (enrollID.trim() === lawyer.enrolmentId) {
       console.log(lawyer.enrolmentId)
       setIsEnrolled(true);
+      setPayData(prev => ({ ...prev, ["name"]: lawyer.username }));
+      setPayData(prev => ({ ...prev, ["email"]: lawyer.email }));
+      setPayData(prev => ({ ...prev, ["phoneNumber"]: lawyer.phone }));
       setEnrollStatus('Enrollment Found ✅');
     } else {
       setIsEnrolled(false);
@@ -145,7 +148,6 @@ export default function PayFee() {
                   type="text"
                   name="name"
                   value={payData.name}
-                  onChange={handlePayChange}
                   required
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-800"
                 />
@@ -156,7 +158,6 @@ export default function PayFee() {
                   type="email"
                   name="email"
                   value={payData.email}
-                  onChange={handlePayChange}
                   required
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-800"
                 />
@@ -177,7 +178,6 @@ export default function PayFee() {
                   type="text"
                   name="phoneNumber"
                   value={payData.phoneNumber}
-                  onChange={handlePayChange}
                   required
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-800"
                   placeholder="Phone Number"
