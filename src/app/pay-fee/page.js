@@ -27,6 +27,8 @@ export default function PayFee() {
   const [enrollID, setEnrollID] = useState('');
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [enrollStatus, setEnrollStatus] = useState('');
+  const [ phoneNumberStatus, setPhoneNumberStatus ] = useState("")
+  const [ formStatus, setFormStatus ] = useState(false)
 
   const handlePaySubmit = async (e) => {
     e.preventDefault();
@@ -82,12 +84,37 @@ export default function PayFee() {
     if (enrollID.trim() === result.enrolmentId) {
       console.log(result.enrolmentId)
       setIsEnrolled(true);
-      setPayData(prev => ({ ...prev, name: result.lawyer.username, phoneNumber: result.lawyer.phone, email: result.lawyer.email }));
       setEnrollStatus('Enrollment Found ✅');
     } else {
       setIsEnrolled(false);
       setEnrollStatus('Enrollment Not Found ❌');
     }
+  };
+
+
+  const handlePhoneNumberCheck = async(number) => {
+
+    const response = await fetch(`${base_url}/phone-number?phone=${number}`)
+    const result = await response.json()
+
+    if (response.status === 403) {
+      setFormStatus(false);
+      setPayData(prev => ({ ...prev, name: "", email: "" }));
+      setPhoneNumberStatus('Lawyer Not Found ❌');
+
+    } else if(response.status === 200){
+
+    if(Number(payData.phoneNumber.trim()) === result.lawyer.phone) {
+      console.log(Number(payData.phoneNumber.trim()) === result.lawyer.phone)
+      setFormStatus(true);
+      setPayData(prev => ({ ...prev, name: result.lawyer.username, email: result.lawyer.email }));
+      setPhoneNumberStatus('Lawyer Found ✅');
+    } else {
+      setFormStatus(false);
+      setPayData(prev => ({ ...prev, name: "", email: "" }));
+      setPhoneNumberStatus('Lawyer Not Found ❌');
+    }
+  }
   };
 
   const handleEnrollmentInputChange = (e) => {
@@ -171,13 +198,19 @@ export default function PayFee() {
                 <label className="block text-sm mb-1">Phone Number</label>
                 <input
                   type="text"
-                  disabled={true}
+                  disabled={!isEnrolled}
                   name="phoneNumber"
                   value={payData.phoneNumber}
+                  onChange={(e)=>{ setPayData(prev => ({ ...prev, ["phoneNumber"]: e.target.value })); handlePhoneNumberCheck(e.target.value) }}
                   required
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-800"
                   placeholder="Phone Number"
                 />
+                {phoneNumberStatus && (
+            <p className={`mt-4 text-sm ${formStatus ? 'text-green-600' : 'text-red-600'}`}>
+              {phoneNumberStatus}
+            </p>
+               )}
               </div>
               <div>
                 <label className="block text-sm mb-1">Payment Type</label>
@@ -269,9 +302,9 @@ export default function PayFee() {
 
             <button
               type="submit"
-              disabled={!isEnrolled}
+              disabled={!formStatus}
               className={`mt-4 w-full ${
-                isEnrolled ? 'bg-blue-800 hover:bg-blue-900' : 'bg-gray-400 cursor-not-allowed'
+                formStatus ? 'bg-blue-800 hover:bg-blue-900' : 'bg-gray-400 cursor-not-allowed'
               } text-white text-sm font-medium py-2.5 rounded-lg transition`}
             >
               {isEnrolled ? <span>{loading ? 'Redirecting...' : `Pay ${payData.amount} Now`}</span> : <span>Verify Enrollment to Proceed</span>}
