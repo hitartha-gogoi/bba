@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 import { useRouter } from 'next/navigation';
@@ -27,13 +27,6 @@ export default function PayFee() {
   const [enrollID, setEnrollID] = useState('');
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [enrollStatus, setEnrollStatus] = useState('');
-
-  const handlePayChange = (e) => {
-    setPayData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
 
   const handlePaySubmit = async (e) => {
     e.preventDefault();
@@ -82,16 +75,14 @@ export default function PayFee() {
     e.preventDefault();
 
     const response = await fetch(`${base_url}/enrolment?enrolmentId=${enrollID}`)
-    const lawyer = await response.json()
+    const result = await response.json()
 
-    console.log(lawyer.enrolmentId)
+    console.log(result.enrolmentId)
 
-    if (enrollID.trim() === lawyer.enrolmentId) {
-      console.log(lawyer.enrolmentId)
+    if (enrollID.trim() === result.enrolmentId) {
+      console.log(result.enrolmentId)
       setIsEnrolled(true);
-      setPayData(prev => ({ ...prev, ["name"]: lawyer.username }));
-      setPayData(prev => ({ ...prev, ["email"]: lawyer.email }));
-      setPayData(prev => ({ ...prev, ["phoneNumber"]: lawyer.phone }));
+      setPayData(prev => ({ ...prev, name: result.lawyer.username, phoneNumber: result.lawyer.phone, email: result.lawyer.email }));
       setEnrollStatus('Enrollment Found ✅');
     } else {
       setIsEnrolled(false);
@@ -147,7 +138,9 @@ export default function PayFee() {
                 <input
                   type="text"
                   name="name"
+                  disabled={true}
                   value={payData.name}
+                  placeholder="name"
                   required
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-800"
                 />
@@ -157,6 +150,8 @@ export default function PayFee() {
                 <input
                   type="email"
                   name="email"
+                  placeholder="email"
+                  disabled={true}
                   value={payData.email}
                   required
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-800"
@@ -176,6 +171,7 @@ export default function PayFee() {
                 <label className="block text-sm mb-1">Phone Number</label>
                 <input
                   type="text"
+                  disabled={true}
                   name="phoneNumber"
                   value={payData.phoneNumber}
                   required
