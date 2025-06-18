@@ -29,7 +29,7 @@ const Gallery = ({ title, category, items, refresh }) => {
 
   //http://localhost:8080
 
-  const base_url = "https://bba-backend.onrender.com"
+  const base_url = "https://api.babahadurgarh.com"
 
   // NOTIFY ACTION TO ADMIN
   const notifyActionToAdmin = async (action)=>{

@@ -12,10 +12,6 @@ import { FaBars } from "react-icons/fa";
 function Navbar({ textColor }) {
   const [isSidebarVisible, setSidebarVisible] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
-  const [ links, setLinks ] = useState([])
-
-  const base_url = "https://bba-backend.onrender.com"
-
 
   const toggleSidebar = () => {
     setSidebarVisible(!isSidebarVisible);

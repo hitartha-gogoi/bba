@@ -1,6 +1,6 @@
 import Event from "./events.jsx"; // Note: no "use client" here
 
-const base_url = "https://bba-backend.onrender.com";
+const base_url = "https://api.babahadurgarh.com";
 
 // This is a Server Component by default.  
 // Fetch happens here—on the server—so HTML includes your data.

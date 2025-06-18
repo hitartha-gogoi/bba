@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Admin from './admin';
 import Login from './login';
 
-const base_url = 'https://bba-backend.onrender.com';
+const base_url = 'https://api.babahadurgarh.com';
 
 export default function AdminWrapper() {
   const [token, setToken] = useState(null);

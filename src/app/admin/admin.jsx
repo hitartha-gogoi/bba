@@ -148,7 +148,7 @@ export default function Admin({ initialLawyers, initialEvents, initialLinks, ini
   // local url = http://localhost:8080
   // production url = https://bba-backend.onrender.com
 
-  const base_url = "https://bba-backend.onrender.com"
+  const base_url = "https://api.babahadurgarh.com"
 
   // NOTIFY ACTION TO ADMIN
   const notifyActionToAdmin = async (action)=>{

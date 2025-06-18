@@ -5,7 +5,7 @@ import Navbar from "@/components/navbar";
 
 export default function Login({ onLogin }) {
 
-  const base_url = "https://bba-backend.onrender.com"
+  const base_url = "https://api.babahadurgarh.com"
 
   const router = useRouter();
   const [email, setEmail] = useState('');

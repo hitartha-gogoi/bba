@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 export default function SignupForm() {
 
-  const base_url = "https://bba-backend.onrender.com"
+  const base_url = "https://api.babahadurgarh.com"
   const adminUsername = localStorage.getItem('name')
   const adminEmail = localStorage.getItem('email')
 

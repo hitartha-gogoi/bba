@@ -10,7 +10,7 @@ import { FiDownload } from "react-icons/fi";
 
 export default function Directory({ initialLawyers }) {
 
-  const base_url = "https://bba-backend.onrender.com"
+  const base_url = "https://api.babahadurgarh.com"
 
   //SEARCH QUERY STATE
   const [query, setQuery] = useState('');
