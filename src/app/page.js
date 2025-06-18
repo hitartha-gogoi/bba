@@ -3,9 +3,6 @@ import Image from "next/image";
 import Navbar from "@/components/navbar";
 import Banner from "@/components/banner"
 import Footer from "@/components/footer"
-import CountUp from 'react-countup';
-import Tweets from "@/components/tweets";
-import  Carousel from "@/components/carousel";
 import { FaBalanceScale, FaGavel, FaHandshake } from 'react-icons/fa'
 import { useState } from "react";
 import { useEffect } from "react";
