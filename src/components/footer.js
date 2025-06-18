@@ -22,10 +22,6 @@ function Footer(){
                   <span className="text-left banner-text text-gray-300 text-sm  font-normal hover:shadow-xl over:text-gray-400 transition-transform duration-200 ease-in-out mx-4 banner-text">About Us</span>
                 </Link>
 
-                <Link className="self-start" href="/">
-                  <span className="text-left banner-text text-gray-300 text-sm  font-normal hover:shadow-xl hover:text-blue-400 transition-transform duration-200 ease-in-out mx-4 banner-text">Our Team</span>
-                </Link>
-
             </div>
 
            {/* ONE COLUMN */}
