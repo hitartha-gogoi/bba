@@ -72,12 +72,17 @@ function Navbar({ textColor }) {
             className="popup-menu absolute left-[46%] -translate-x-1/2 top-full bg-white p-3 rounded-lg shadow-lg flex flex-col w-72"
             style={{ marginTop: "8px", paddingTop: "8px" }}
           >
-            <span className="flex items-center text-xs text-neutral-900 p-4 h-4 border-b-2 border-gray-200">MORE STUFF</span>
+            <span className="flex items-center text-xs text-neutral-900 p-4 h-4 border-b-2 border-gray-200"></span>
+
+              <Link href={"https://judgments.ecourts.gov.in/pdfsearch/?p=pdf_search/index&escr_flag=Y"} className="group flex items-center gap-4 p-4 border-b-2 border-gray-200 text-black hover:text-white hover:bg-black">
+                <span className="font-extrabold uppercase">Judgements</span>
+              </Link>
+
+              <Link href={"https://jhajjar.dcourts.gov.in/list-of-judges/"} className="group flex items-center gap-4 p-4 border-b-2 border-gray-200 text-black hover:text-white hover:bg-black">
+                <span className="font-extrabold uppercase">Sitting Judges</span>
+              </Link>
           
-              <Link
-                href={"/links-and-pdf"}
-                className="group flex items-center gap-4 p-4 border-b-2 border-gray-200 text-black hover:text-white hover:bg-black"
-              >
+              <Link href={"/links-and-pdf"} className="group flex items-center gap-4 p-4 border-b-2 border-gray-200 text-black hover:text-white hover:bg-black">
                 <span className="font-extrabold uppercase">announcements</span>
               </Link>
           </motion.div>

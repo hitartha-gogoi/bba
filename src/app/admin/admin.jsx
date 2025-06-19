@@ -1259,6 +1259,11 @@ export default function Admin({ initialLawyers, initialEvents, initialLinks, ini
 
           <h2 className="text-xl font-semibold text-blue-800 mb-4">Transactions ({transactions.length})</h2>
 
+          <div className="flex flex-row justify-between items-center w-full">
+            <h2 className="text-lg font-semibold ">Total Vakalatnama Fees: ₹<span className='text-blue-800 mb-4'>{transactions.filter(txn => txn.type === "vakalatnama").reduce((sum, txn) => sum + Number(txn.fee), 0)}</span></h2>
+            <h2 className="text-lg font-semibold text-blue-800 mb-4">Total Membership Fees: ₹<span className='text-blue-800 mb-4'>{transactions.filter(txn => txn.type === "membership").reduce((sum, txn) => sum + Number(txn.fee), 0)}</span></h2>
+          </div>
+
           <div className='flex flex-col w-full divide-y divide-gray-300'>
           {transactions.map((item, idx) => (
               <div key={item._id} className="py-4 flex flex-col self-start w-full text-black">
