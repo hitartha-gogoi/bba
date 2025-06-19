@@ -22,8 +22,12 @@ export default function Directory({ initialLawyers }) {
     const [ overlayLawyerName, setOverlayLawyerName ] = useState('')
     const [ overlayLawyerEmail, setOverlayLawyerEmail ] = useState('')  
     const [ overlayLawyerDescription, setOverlayLawyerDescription ] = useState('')
-    const [ overlayLawyerPhoto, setOverlayLawyerPhoto ] = useState('')  
+    const [ overlayLawyerPhoto, setOverlayLawyerPhoto ] = useState('')
+    const [ overlayLawyerAddress, setOverlayLawyerAddress ] = useState("")
+    const [ overlayFatherName, setOverlayFatherName ] = useState("")
     const [ overlayLawyerPhone, setOverlayLawyerPhone ] = useState('')
+    const [ overlayLawyerMembership, setOverlayLawyerMembership ] = useState('')
+    const [ overlayEnrolmentNumber, setOverlayEnrolmentNumber ] = useState('')  
     const [ overlay, setOverlay] = useState(false);
 
 
@@ -118,8 +122,25 @@ export default function Directory({ initialLawyers }) {
                          {overlayLawyerEmail}
                         </p>
                         <p className="text-gray-600 text-sm mt-2">
-                         {overlayLawyerDescription}
+                         Mobile: {overlayLawyerPhone}
                         </p>
+
+                        <p className="text-gray-600 text-sm mt-2">
+                   {overlayLawyerAddress}
+                  </p>
+                  <p className="text-gray-600 text-sm mt-2">
+                  enrolment Number:  {overlayEnrolmentNumber}
+                  </p>
+                  <p className="text-gray-600 text-sm mt-2">
+                    Membership status:  {new Date(overlayLawyerMembership) < new Date() ? ( <span className="text-red-500 font-semibold">Expired</span>) : <span className="text-green-600 font-semibold">Active</span> }
+                  </p>
+                  <p className="text-gray-700">
+                   
+                   {new Date(overlayLawyerMembership) < new Date() ? ( <span>Last Membership: </span>) : <span>Current membership till: </span> } {new Date(overlayLawyerMembership).toLocaleDateString('en-US', { weekday: 'long',month: 'long', day: 'numeric', year: 'numeric' })}
+                  </p>
+                  <p className="text-gray-600 text-sm mt-2">
+                   Father's Name: {overlayFatherName}
+                  </p>
                       </div>
                     </div>
                   </motion.div>
@@ -142,11 +163,12 @@ export default function Directory({ initialLawyers }) {
             return (
         
                 <div key={index} className="flex flex-row justify-evenly items-center p-4  w-full rounded-md z-9999">
-                  <div onClick={() => { setOverlayLawyerName(lawyer.username); setOverlayLawyerEmail(lawyer.email); setOverlayLawyerPhoto(lawyer.photo); setOverlayLawyerDescription(lawyer.description); setOverlay(true) }}  className="flex flex-row justify-start flex-wrap items-center py-2 w-full sm:w-4/5">
+                  <div onClick={() => { setOverlayLawyerName(lawyer.username); setOverlayLawyerEmail(lawyer.email); setOverlayLawyerPhoto(lawyer.photo); setOverlayLawyerDescription(lawyer.description); setOverlayEnrolmentNumber(lawyer.enrolmentNumber); setOverlayLawyerAddress(lawyer.address); setOverlayLawyerPhoto(lawyer.photo); setOverlayFatherName(lawyer.fatherName); setOverlayLawyerMembership(lawyer.membership); setOverlay(true) }}  className="flex flex-row justify-start flex-wrap items-center py-2 w-full sm:w-4/5">
                      {lawyer.photo ? ( <Image height={60} width={60} className="sm:rounded-md rounded-full h-10 w-10" src={lawyer.photo || "https://via.placeholder.com/60"} alt={lawyer.username || "Lawyer Image"} />) : ( <div className="w-[60px] h-[60px] bg-gray-300 rounded-md" />)}
                     <div className="flex flex-col justify-start items-center py-2 ml-4">
                       <span className="text-black self-start font-semibold banner-text ">{lawyer.username}</span>
                       <span className="text-gray-400 self-start font-semibold banner-text ">{lawyer.email}</span>
+                      
                     </div>
                   </div>
                   <button onClick={() => { setOverlayLawyerName(lawyer.username); setOverlayLawyerEmail(lawyer.email); setOverlayLawyerPhoto(lawyer.photo); setOverlayLawyerDescription(lawyer.description); setOverlay(true) }} className="text-gray-700 text-sm hidden sm:block bg-gray-100 font-normal banner-text uppercase w-48 py-2 rounded-md text-center">view details</button>
