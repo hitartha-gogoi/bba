@@ -1160,13 +1160,14 @@ export default function Admin({ initialLawyers, initialEvents, initialLinks, ini
   const viewTransactions = async()=>{
     try {
       setIsLoading(true)
-      const start = range[0].startDate.toISOString().split("T")[0]; // 'YYYY-MM-DD'
-      const end = range[0].endDate.toISOString().split("T")[0];     // 'YYYY-MM-DD'
-      const response = await fetch(`${base_url}/view-transactions?start=${start}&end=${end}`, {
-        method: 'GET',
+      const start = range[0].startDate.toISOString() // 'YYYY-MM-DD'
+      const end = range[0].endDate.toISOString()   // 'YYYY-MM-DD'
+      const response = await fetch(`${base_url}/view-transactions`, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ start, end })
       });
       
       const data = await response.json();

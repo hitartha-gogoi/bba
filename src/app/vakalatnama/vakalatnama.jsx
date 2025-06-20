@@ -13,7 +13,7 @@ export default function Vakalatnama({ initialVakalatnama, initialLatestPayment }
 
   useEffect(() => {
     console.log('Loaded Vakalatnamas:', vakalatnamas);
-    console.log("Latest Payment: ", initialLatestPayment)
+    console.log("Latest Payment: ", latestPayment)
   }, [vakalatnamas]);
 
   const handleDownload = (url, title) => {
