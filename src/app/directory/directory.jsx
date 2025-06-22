@@ -32,9 +32,9 @@ export default function Directory({ initialLawyers }) {
 
 
     // SEARCH LAWYERS
-    const search = async () => {
+    const search = async (searchQuery) => {
         try{
-            const response = await fetch(`${base_url}/search?username=${query}`, { 
+            const response = await fetch(`${base_url}/search?username=${searchQuery}`, { 
                 method: 'GET', 
                 headers: {
                     'Content-Type': 'application/json',
@@ -150,7 +150,7 @@ export default function Directory({ initialLawyers }) {
       
       {/* SEARCH BAR */}
         <div className="relative w-4/5 my-4  flex flex-row items-center justify-center">      
-          <input type="text" value={query} onChange={(e) =>{ setQuery(e.target.value); search(); }} placeholder="Search Lawyers" className="w-4/5 pl-12 pr-4 py-3 rounded-md border border-gray-300 bg-gray-100 text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md" />
+          <input type="text" value={query} onChange={(e) =>{ setQuery(e.target.value); search(e.target.value); }} placeholder="Search Lawyers" className="w-4/5 pl-12 pr-4 py-3 rounded-md border border-gray-300 bg-gray-100 text-gray-700 placeholder-gray-600 focus:outline-none focus:scale-105 transition-all duration-300 shadow-sm focus:shadow-md" />
           <FiDownload onClick={getAllLawyersList} className='text-gray-900 rounded-full bg-gray-100 h-10 w-10 p-2 ml-6 hover:scale-105 transition-all duration-300 shadow-sm hover:shadow-md' />
         </div>
         
