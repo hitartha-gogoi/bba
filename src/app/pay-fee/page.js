@@ -7,8 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useBaseURL } from '@/context/context';
 
 export default function PayFee() {
-//http://localhost:8080
-//https://bba-backend.onrender.com
+
   const base_url = useBaseURL();
 
   const router = useRouter()
@@ -16,7 +15,7 @@ export default function PayFee() {
   const [payData, setPayData] = useState({
     name: '',
     email: '',
-    amount: 1,
+    amount: 101,
     phoneNumber: '',
   });
 
@@ -180,12 +179,12 @@ export default function PayFee() {
               <>
             <label className="block text-sm mb-1 mt-2">Choose Payment or view Vakalatnamas</label>
               <div className="flex flex-wrap gap-3">
-                 <button type="button"  onClick={() => { setPaymentType("vakalatnama"); handleEnrollment("vakalatnama"); setPayData(prev => ({ ...prev, amount: 1 })); }} className={`px-4 py-2 rounded-lg text-sm font-medium border transition ${
+                 <button type="button"  onClick={() => { setPaymentType("vakalatnama"); handleEnrollment("vakalatnama"); setPayData(prev => ({ ...prev, amount: 101 })); }} className={`px-4 py-2 rounded-lg text-sm font-medium border transition ${
                         paymentType === "vakalatnama" ? "bg-blue-800 text-white border-blue-800" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"}`}>
                           Vakalatnama
                  </button>
 
-                 <button type="button" onClick={() => { setPaymentType("membership"); handleEnrollment("membership"); setPayData(prev => ({ ...prev, amount: 2 }));}}
+                 <button type="button" onClick={() => { setPaymentType("membership"); handleEnrollment("membership"); setPayData(prev => ({ ...prev, amount: 1500 }));}}
                      className={`px-4 py-2 rounded-lg text-sm font-medium border transition ${paymentType === "membership" ? "bg-blue-800 text-white border-blue-800" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"}`}>
                      Membership
                 </button>
