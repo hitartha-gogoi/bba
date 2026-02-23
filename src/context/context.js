@@ -17,7 +17,8 @@ export const AppProvider = ({ children }) => {
   // Hardcoded or dynamic URL
 
   const LOCALHOST_URL = "http://localhost:8080"
-  const PRODUCTION_URL =  "https://api.babahadurgarh.com"
+  const PRODUCTION_URL =  "https://bba-backend.onrender.com"
+   // "https://api.babahadurgarh.com"
   const [base_url] = useState(PRODUCTION_URL);
 
   return (
